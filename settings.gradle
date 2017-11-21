@@ -1,1 +1,1 @@
-include ':app', ':doutuhelp'
+include ':doutuhelp'
