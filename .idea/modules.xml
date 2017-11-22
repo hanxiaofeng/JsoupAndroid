@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/JsoupAndroid.iml" filepath="$PROJECT_DIR$/JsoupAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/doutuhelp/doutuhelp.iml" filepath="$PROJECT_DIR$/doutuhelp/doutuhelp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/doutuhelp/doutuhelp.iml" filepath="$PROJECT_DIR$/doutuhelp/doutuhelp.iml" />
     </modules>
   </component>
 </project>
