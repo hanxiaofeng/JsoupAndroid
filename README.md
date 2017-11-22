@@ -3,4 +3,4 @@
 
 ### 效果图
 
-![gif](http://github.com/itmyhome2013/readme_add_pic/raw/master/images/nongshalie.jpg)
+![gif](https://github.com/hanxiaofeng/JsoupAndroid/blob/master/gif/launcher.gif)
