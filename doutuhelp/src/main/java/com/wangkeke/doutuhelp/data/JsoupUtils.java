@@ -21,11 +21,15 @@ import java.util.List;
 
 public class JsoupUtils {
 
+    private static final String BASE_URL = "http://sj.enterdesk.com/";
+
     private static JsoupUtils jsoupUtils = null;
 
     private List<FoldData> listData = null;
 
     private static Handler myHandler;
+
+    String url = "";
 
     public static JsoupUtils newInstance(Handler handler) {
         myHandler = handler;
@@ -35,10 +39,15 @@ public class JsoupUtils {
         return jsoupUtils;
     }
 
-    public void getImageFoldByUrl(final String url) {
+    public void getImageFoldByUrl(int page) {
+
+        if (page == 1) {
+            url = BASE_URL;
+        } else {
+            url = BASE_URL + "" + page + ".html";
+        }
+
         listData = new ArrayList<>();
-
-
         // 通过get()获取一个Document对象
         new Thread(new Runnable() {
             @Override
@@ -53,15 +62,10 @@ public class JsoupUtils {
                             .select("div.egeli_pic_m").select("div.egeli_pic_li");
 
                     // 多个select()拼接可以用空格隔开
-//                    Elements catsLi = typoElements.select("ul li");
                     typoElements.remove(0);
+                    typoElements.remove(typoElements.size()-1);
                     for (Element element : typoElements) {
                         String href = element.select("dl.egeli_pic_dl dd a img").attr("src");
-//                        String hrefimg = element.select("span.dtimg").select("a img").attr("src");
-//                        String name = element.select("span.dtname").select("a").text();
-//                        String date = element.select("span.dttip").select("font.zihui").text();
-//                        Log.e("result", "catsLi = " + hrefimg+"\t"+href + "\t" + name+"\t"+date);
-
                         FoldData foldData = new FoldData();
                         foldData.setTitle("");
                         foldData.setImgUrl(href);

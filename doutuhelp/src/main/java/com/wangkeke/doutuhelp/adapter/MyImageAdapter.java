@@ -8,9 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.andview.refreshview.recyclerview.BaseRecyclerAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.wangkeke.doutuhelp.R;
@@ -23,19 +24,25 @@ import java.util.List;
  * Created by wangkeke on 2017/11/21.
  */
 
-public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.MyAdapterViewHolder> {
+public class MyImageAdapter extends BaseRecyclerAdapter<MyImageAdapter.MyAdapterViewHolder> {
 
     private List<FoldData> listData = new ArrayList<>();
 
     private Context context;
+
+    private OnItemClickListener listener;
 
     public MyImageAdapter(Context context) {
         this.context = context;
     }
 
     @Override
-    public MyAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyAdapterViewHolder getViewHolder(View view) {
+        return new MyAdapterViewHolder(view,false);
+    }
 
+    @Override
+    public MyAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType, boolean isItem) {
         View v = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.item_image_fold, parent, false);
         MyAdapterViewHolder vh = new MyAdapterViewHolder(v, true);
@@ -43,13 +50,10 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.MyAdapte
     }
 
     @Override
-    public void onBindViewHolder(final MyAdapterViewHolder holder, int position) {
-
+    public void onBindViewHolder(final MyAdapterViewHolder holder, final int position, boolean isItem) {
         FoldData data = listData.get(position);
 
-        holder.title.setText(data.getTitle());
-        holder.date.setText(data.getDate());
-        Glide.with(context).load(data.getImgUrl()).asBitmap().centerCrop().into(new BitmapImageViewTarget(holder.image) {
+        Glide.with(context).load(data.getImgUrl()).asBitmap().into(new BitmapImageViewTarget(holder.image) {
 
             @Override
             public void onLoadStarted(Drawable placeholder) {
@@ -66,10 +70,23 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.MyAdapte
                 holder.image.setImageBitmap(resource);
             }
         });
+
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(position,holder.image);
+            }
+        });
+
     }
 
     @Override
-    public int getItemCount() {
+    public int getAdapterItemViewType(int position) {
+        return 0;
+    }
+
+    @Override
+    public int getAdapterItemCount() {
         return null == listData ? 0 : listData.size();
     }
 
@@ -78,11 +95,23 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.MyAdapte
         notifyDataSetChanged();
     }
 
+    public void insert(FoldData foldData, int position) {
+        insert(listData, foldData, position);
+    }
+
+    public void remove(int position) {
+        remove(listData, position);
+    }
+
+    public void clear() {
+        clear(listData);
+    }
+
     public class MyAdapterViewHolder extends RecyclerView.ViewHolder {
 
         public CardView rootView;
         public ImageView image;
-        public TextView title, date;
+        public Button button;
 
         public MyAdapterViewHolder(View itemView, boolean isItem) {
             super(itemView);
@@ -90,15 +119,18 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.MyAdapte
                 rootView = itemView
                         .findViewById(R.id.rootView);
                 image = itemView.findViewById(R.id.image);
-                title = itemView.findViewById(R.id.title);
-                date = itemView.findViewById(R.id.date);
+                button = itemView.findViewById(R.id.button);
             }
 
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(int position,ImageView image);
+    }
+
+    public void setOnSetImageClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 
 }
