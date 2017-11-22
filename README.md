@@ -3,4 +3,4 @@
 
 ### 效果图
 
-![gif](https://github.com/hanxiaofeng/JsoupAndroid/gif/launcher.gif)
+![gif](https://github.com/hanxiaofeng/JsoupAndroid/blob/master/gif/launcher.gif)
